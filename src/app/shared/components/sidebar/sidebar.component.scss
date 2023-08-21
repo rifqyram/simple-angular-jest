@@ -1,0 +1,60 @@
+.container {
+
+    h1 {
+        white-space: nowrap;
+
+        &.hidden {
+            display: none;
+        }
+    }
+
+    .expand-btn-wrapper {
+        position: relative;
+        display: grid;
+        margin: 1em 0;
+
+        .close-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            right: -20px;
+            top: 0;
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            cursor: pointer;
+            place-self: end;
+        }
+
+        .expand-btn {
+            cursor: pointer;
+            place-self: center;
+        }
+    }
+
+    ul {
+        li {
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            color: rgb(210, 210, 210);
+            white-space: nowrap;
+
+            &:hover {
+                color: white;
+            }
+
+            &.active {
+                font-weight: bold;
+                border-bottom: 2px solid white;
+                color: white;
+            }
+
+            span {
+
+                &.hidden {
+                    visibility: hidden;
+                }
+            }
+        }
+    }
+}

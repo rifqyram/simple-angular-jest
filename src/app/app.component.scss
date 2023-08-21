@@ -1,0 +1,8 @@
+aside {
+    width: 75px;
+    transition: .5s;
+
+    &.expand {
+        width: 320px;
+    }
+}

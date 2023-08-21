@@ -1,0 +1,23 @@
+<div class="container text-white">
+    <div class="expand-btn-wrapper">
+        <ng-container *ngIf="isExpand; else listIcon">
+            <i (click)="handleExpanded()" class="bi bi-x close-btn fs-2"></i>
+        </ng-container>
+        <ng-template #listIcon>
+            <i (click)="handleExpanded()" class="bi bi-list expand-btn fs-2"></i>
+        </ng-template>
+    </div>
+
+    <h1 [ngClass]="isExpand ? 'fs-3 text-center' : 'hidden'">Management Product</h1>
+
+    <ul class="mt-3 list-unstyled">
+        <li class="m-2 p-2" [routerLink]="['/products']" [routerLinkActive]="['active']">
+            <i class="me-2 fs-5 bi bi-box-seam"></i>
+            <span [ngClass]="isExpand ? '' : 'hidden'">Products</span>
+        </li>
+        <li class="m-2 p-2" (click)="handleLogout()">
+            <i class="me-2 fs-5 bi bi-box-arrow-right"></i>
+            <span [ngClass]="isExpand ? '' : 'hidden'">Logout</span>
+        </li>
+    </ul>
+</div>

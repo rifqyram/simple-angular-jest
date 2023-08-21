@@ -1,0 +1,44 @@
+<app-loading [width]="64" [height]="64" *ngIf="isLoading | async"></app-loading>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <a [routerLink]="['/products']"><i class="bi bi-arrow-left fs-2"></i></a>
+    </div>
+    <div class="row justify-content-center row align-items-center" style="min-height: 80vh;">
+        <form (submit)="submit()" [formGroup]="form"
+            class="col-md-7 mt-4 col-lg-6 border border-1 rounded p-4 d-flex flex-column gap-3">
+            <h2 class="text-center fs-3">Product Form</h2>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input formControlName="name" class="form-control " type="text" name="name" id="name"
+                    placeholder="eg. Laptop Wibu">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea formControlName="description" class="form-control"
+                    placeholder="eg. Laptop yang bagus"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input formControlName="price" class="form-control" type="number" name="price" id="price"
+                    placeholder="eg. 5000000">
+            </div>
+            <div class="form-group">
+                <label for="quantity">Stock</label>
+                <input formControlName="stock" class="form-control " type="number" name="stock" id="stock"
+                    placeholder="eg. 100">
+            </div>
+
+            <div class="button-group">
+                <ng-template #noLoading>
+                    <button [disabled]="!form.valid" type="submit" class="btn w-100 btn-outline-primary">Save</button>
+                </ng-template>
+
+                <button *ngIf="(isLoading | async); else noLoading" class="btn btn-primary w-100" type="button"
+                    disabled>
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    <span class="sr-only">Loading...</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

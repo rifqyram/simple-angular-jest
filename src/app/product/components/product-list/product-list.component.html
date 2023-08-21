@@ -1,0 +1,44 @@
+<div class="position-absolute bottom-0 end-0 rounded-circle m-5">
+    <button [routerLink]="['/products', 'add']" type="button" class="btn btn-dark">
+        Add New
+        <i class="ms-1 bi bi-plus"></i>
+    </button>
+</div>
+
+<app-loading [width]="64" [height]="64" *ngIf="isLoading | async"></app-loading>
+
+<div class="container product-form mt-4">
+    <h2>Product List</h2>
+    <ng-template #data>
+        <div class="table-wrap table-responsive">
+            <table class="table">
+                <thead class="thead-primary">
+                    <tr>
+                        <th>Product</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let product of products" class="alert" role="alert">
+                        <td> {{product.name}}</td>
+                        <td>{{product.description}}</td>
+                        <td>{{product.price}}</td>
+                        <td class="quantity">{{product.stock}}</td>
+                        <td class="btn-group">
+                            <button [routerLink]="['edit', product.productId]" class="btn btn-primary"><i
+                                    class="bi bi-pencil"></i></button>
+                            <button (click)="handleDelete(product.productId)" class="btn btn-danger"><i
+                                    class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-template>
+    <ng-container *ngIf="products.length === 0; else data">
+        <h2 class="text-center fs-5 mt-4">No Data</h2>
+    </ng-container>
+</div>
