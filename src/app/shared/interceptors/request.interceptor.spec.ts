@@ -1,13 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 
 import { RequestInterceptor } from './request.interceptor';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 describe('RequestInterceptor', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [
-      RequestInterceptor
+  let authService: any;
+  beforeEach(() => {
+    authService = {
+      getUserFromStorage: jest.fn()
+    }
+
+    TestBed.configureTestingModule({
+      providers: [
+        RequestInterceptor,
+        {
+          provide: AuthService,
+          useValue: authService
+        }
       ]
-  }));
+    })
+  });
 
   it('should be created', () => {
     const interceptor: RequestInterceptor = TestBed.inject(RequestInterceptor);

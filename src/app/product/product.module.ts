@@ -6,6 +6,8 @@ import { AppRoutingModule } from '../app-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ProductService } from './services/product.service';
+import { LoadingService } from '../shared/services/loading.service';
 
 
 
@@ -21,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
-  ]
+  ],
+  providers: [ProductService, LoadingService]
 })
 export class ProductModule { }
