@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, catchError, of } from 'rxjs';
 import { LoadingService } from 'src/app/shared/services/loading.service';
 import handlingError from 'src/app/utils/handling-error';
 import { swalSuccess } from 'src/app/utils/app-util';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register-form',
@@ -22,7 +22,7 @@ export class RegisterFormComponent implements OnInit {
     private readonly loadingService: LoadingService
   ) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit() {
     this.buildForm();
     const user = this.authService.getUserFromStorage();
 

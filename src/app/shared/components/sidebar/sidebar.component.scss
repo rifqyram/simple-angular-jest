@@ -33,9 +33,12 @@
     }
 
     ul {
-        li {
+        li a {
+            width: 100%;
+            text-align: left;
             border-bottom: 1px solid #333;
             cursor: pointer;
+            border-radius: 0;
             color: rgb(210, 210, 210);
             white-space: nowrap;
 

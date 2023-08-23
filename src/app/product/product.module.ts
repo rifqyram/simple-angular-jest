@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
 import { LoadingService } from '../shared/services/loading.service';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -18,11 +19,11 @@ import { LoadingService } from '../shared/services/loading.service';
   ],
   imports: [
     CommonModule,
-    AppRoutingModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule,
   ],
   providers: [ProductService, LoadingService]
 })

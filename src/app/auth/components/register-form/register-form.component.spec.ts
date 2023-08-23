@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RegisterFormComponent } from './register-form.component';
 import { AuthService } from '../../services/auth.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('RegisterFormComponent', () => {
   let component: RegisterFormComponent;
@@ -13,12 +15,14 @@ describe('RegisterFormComponent', () => {
   beforeEach(async () => {
     authService = {
       register: jest.fn(),
+      getUserFromStorage: jest.fn(),
     }
     loadingService = {
       showLoading: jest.fn(),
       hideLoading: jest.fn()
     }
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, ReactiveFormsModule, FormsModule],
       declarations: [RegisterFormComponent],
       providers: [{
         provide: AuthService,
@@ -27,7 +31,8 @@ describe('RegisterFormComponent', () => {
       {
         provide: LoadingService,
         useValue: loadingService
-      }]
+      },
+      ]
     })
       .compileComponents();
 

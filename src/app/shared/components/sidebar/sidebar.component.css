@@ -1,0 +1,47 @@
+.container h1 {
+  white-space: nowrap;
+}
+.container h1.hidden {
+  display: none;
+}
+.container .expand-btn-wrapper {
+  position: relative;
+  display: grid;
+  margin: 1em 0;
+}
+.container .expand-btn-wrapper .close-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: -20px;
+  top: 0;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+  place-self: end;
+}
+.container .expand-btn-wrapper .expand-btn {
+  cursor: pointer;
+  place-self: center;
+}
+.container ul li a {
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+  border-radius: 0;
+  color: rgb(210, 210, 210);
+  white-space: nowrap;
+}
+.container ul li a:hover {
+  color: white;
+}
+.container ul li a.active {
+  font-weight: bold;
+  border-bottom: 2px solid white;
+  color: white;
+}
+.container ul li a span.hidden {
+  visibility: hidden;
+}/*# sourceMappingURL=sidebar.component.css.map */

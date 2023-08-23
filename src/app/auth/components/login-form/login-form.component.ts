@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoadingService } from 'src/app/shared/services/loading.service';
 import { Observable, catchError } from 'rxjs';
 import handlingError from 'src/app/utils/handling-error';
 import CommonResponse from 'src/app/shared/models/ICommonResponse';
 import { AuthResponse } from '../../models/IAuthModel';
 import { swalSuccess } from 'src/app/utils/app-util';
+import { LoadingService } from 'src/app/shared/services/loading.service';
 
 @Component({
   selector: 'app-login-form',

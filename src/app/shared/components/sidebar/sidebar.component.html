@@ -11,13 +11,17 @@
     <h1 [ngClass]="isExpand ? 'fs-3 text-center' : 'hidden'">Management Product</h1>
 
     <ul class="mt-3 list-unstyled">
-        <li class="m-2 p-2" [routerLink]="['/products']" [routerLinkActive]="['active']">
-            <i class="me-2 fs-5 bi bi-box-seam"></i>
-            <span [ngClass]="isExpand ? '' : 'hidden'">Products</span>
+        <li class="m-2 p-2">
+            <a class="btn btn-link text-decoration-none" [routerLink]="['/products']" [routerLinkActive]="['active']">
+                <i class="me-2 fs-5 bi bi-box-seam"></i>
+                <span [ngClass]="isExpand ? '' : 'hidden'">Products</span>
+            </a>
         </li>
-        <li class="m-2 p-2" (click)="handleLogout()">
-            <i class="me-2 fs-5 bi bi-box-arrow-right"></i>
-            <span [ngClass]="isExpand ? '' : 'hidden'">Logout</span>
+        <li class="m-2 p-2">
+            <a class="btn btn-link text-decoration-none" (click)="handleLogout()">
+                <i class="me-2 fs-5 bi bi-box-arrow-right"></i>
+                <span [ngClass]="isExpand ? '' : 'hidden'">Logout</span>
+            </a>
         </li>
     </ul>
 </div>

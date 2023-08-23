@@ -4,6 +4,8 @@ import { LoginFormComponent } from './login-form.component';
 import { AuthService } from '../../services/auth.service';
 import { LoadingService } from 'src/app/shared/services/loading.service';
 import { BehaviorSubject } from 'rxjs';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('LoginFormComponent', () => {
   let component: LoginFormComponent;
@@ -15,6 +17,7 @@ describe('LoginFormComponent', () => {
   beforeEach(async () => {
     loadingSubject = new BehaviorSubject(false)
     authService = {
+      getUserFromStorage: jest.fn(),
       login: jest.fn(),
     }
     loadingService = {
@@ -25,6 +28,7 @@ describe('LoginFormComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [LoginFormComponent],
+      imports: [RouterTestingModule, FormsModule, ReactiveFormsModule],
       providers: [
         {
           provide: AuthService,

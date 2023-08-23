@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -20,9 +21,9 @@ import { AuthService } from './services/auth.service';
     CommonModule,
     HttpClientModule,
     SharedModule,
-    AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
   ],
   providers: [AuthService]
 })

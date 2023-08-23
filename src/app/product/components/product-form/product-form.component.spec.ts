@@ -3,6 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductFormComponent } from './product-form.component';
 import { LoadingService } from 'src/app/shared/services/loading.service';
 import { ProductService } from '../../services/product.service';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ProductFormComponent', () => {
   let component: ProductFormComponent;
@@ -23,6 +27,7 @@ describe('ProductFormComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [ProductFormComponent],
+      imports: [ReactiveFormsModule, FormsModule, RouterTestingModule],
       providers: [
         {
           provide: ProductService,
@@ -31,7 +36,7 @@ describe('ProductFormComponent', () => {
         {
           provide: LoadingService,
           useValue: loadingService
-        }
+        },
       ]
     })
       .compileComponents();
