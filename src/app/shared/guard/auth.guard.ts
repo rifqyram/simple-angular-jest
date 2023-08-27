@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, catchError, map, of, switchMap } from 'rxjs';
 import { AuthResponse } from 'src/app/auth/models/IAuthModel';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 export const canActivate: CanActivateFn = (
@@ -17,18 +17,18 @@ export const canActivate: CanActivateFn = (
   if (user && user.token) {
     return authService.getUserInfo().pipe(map(({ data }) => {
       if (data) return true;
-      router.navigateByUrl('/login');
+      router.navigate(['/login']);
       return false;
     }),
       catchError((err) => {
         authService.clearUserStorage();
-        router.navigateByUrl('/login');
+        router.navigate(['/login']);
         return of(false);
       })
     )
   }
 
-  router.navigateByUrl('/login');
+  router.navigate(['/login']);
   return of(false);
 
 }

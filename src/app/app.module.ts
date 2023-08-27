@@ -3,30 +3,57 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SharedModule } from './shared/shared.module';
-import { AuthModule } from './auth/auth.module';
-import { ProductModule } from './product/product.module';
-import { AuthService } from './auth/services/auth.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RequestInterceptor } from './shared/interceptors/request.interceptor';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { LoadingComponent } from './shared/components/loading/loading.component';
+import { ProductFormComponent } from './product/components/product-form/product-form.component';
+import { ProductListComponent } from './product/components/product-list/product-list.component';
+import { LoginFormComponent } from './auth/components/login-form/login-form.component';
+import { RegisterFormComponent } from './auth/components/register-form/register-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { LoadingService } from './services/loading.service';
+import { ProductService } from './services/product.service';
+import { AuthService } from './services/auth.service';
+import { UtilService } from './services/util.service';
+
+let components = [
+  AppComponent,
+  SidebarComponent,
+  LoadingComponent,
+  ProductFormComponent,
+  ProductListComponent,
+  LoginFormComponent,
+  RegisterFormComponent
+];
+
+let modules = [
+  BrowserModule,
+  AppRoutingModule,
+  ReactiveFormsModule,
+  FormsModule,
+  RouterModule,
+  HttpClientModule,
+]
+
+let services = [
+  LoadingService,
+  ProductService,
+  AuthService,
+  UtilService,
+]
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    SharedModule,
-    AuthModule,
-    ProductModule
-  ],
+  declarations: [...components],
+  imports: [...modules],
   providers: [
+    ...services,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptor,
       multi: true
-    }
+    },
   ],
   bootstrap: [AppComponent],
 })

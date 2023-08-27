@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProductListComponent } from './product-list.component';
-import { AuthService } from 'src/app/auth/services/auth.service';
-import { LoadingService } from 'src/app/shared/services/loading.service';
 import { BehaviorSubject, of } from 'rxjs';
-import { ProductService } from '../../services/product.service';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { ActivatedRoute, RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ProductService } from 'src/app/services/product.service';
+import { LoadingService } from 'src/app/services/loading.service';
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
@@ -19,20 +16,7 @@ describe('ProductListComponent', () => {
   beforeEach(async () => {
     loadingSubject = new BehaviorSubject(false);
     productService = {
-      getAll: jest.fn().mockReturnValue(of({
-        message: "success",
-        status: "OK",
-        errors: null,
-        data: [
-          {
-            productId: "string",
-            name: "string",
-            description: "string",
-            price: 0,
-            stock: 0,
-          }
-        ]
-      })),
+      getAll: jest.fn(),
       deleteById: jest.fn(),
     }
     loadingService = {

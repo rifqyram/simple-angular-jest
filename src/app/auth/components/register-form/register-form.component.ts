@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, catchError, of } from 'rxjs';
-import { LoadingService } from 'src/app/shared/services/loading.service';
-import handlingError from 'src/app/utils/handling-error';
-import { swalSuccess } from 'src/app/utils/app-util';
-import { AuthService } from '../../services/auth.service';
+import { Observable, catchError } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { LoadingService } from 'src/app/services/loading.service';
+import { UtilService } from 'src/app/services/util.service';
 
 @Component({
   selector: 'app-register-form',
@@ -19,15 +18,20 @@ export class RegisterFormComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly loadingService: LoadingService
+    private readonly loadingService: LoadingService,
+    private readonly utilService: UtilService,
   ) { }
 
   ngOnInit() {
     this.buildForm();
+    this.fetchUserInfo();
+  }
+
+  fetchUserInfo() {
     const user = this.authService.getUserFromStorage();
 
     if (user) {
-      this.router.navigateByUrl('/products')
+      this.router.navigate(['/products']).finally;
     }
   }
 
@@ -48,13 +52,12 @@ export class RegisterFormComponent implements OnInit {
 
     const payload = this.form.value;
     this.authService.register(payload)
-      .pipe(catchError(handlingError))
+      .pipe(catchError(err => this.utilService.handleHttpError(err)))
       .subscribe({
         next: res => {
-          swalSuccess(res.message)
-          this.router.navigateByUrl('/login');
+          this.utilService.swalSuccess(res.message)
+          this.router.navigate(['/login']).finally;
         },
-        error: (err) => alert(err),
         complete: () => this.loadingService.hideLoading()
       });
   }

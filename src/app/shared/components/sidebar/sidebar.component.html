@@ -1,4 +1,4 @@
-<div class="container text-white">
+<div [hidden]="!(isLoggedIn | async)" [ngClass]="isExpand ? 'container text-white' : 'container text-white hidden'">
     <div class="expand-btn-wrapper">
         <ng-container *ngIf="isExpand; else listIcon">
             <i (click)="handleExpanded()" class="bi bi-x close-btn fs-2"></i>
@@ -11,13 +11,13 @@
     <h1 [ngClass]="isExpand ? 'fs-3 text-center' : 'hidden'">Management Product</h1>
 
     <ul class="mt-3 list-unstyled">
-        <li class="m-2 p-2">
-            <a class="btn btn-link text-decoration-none" [routerLink]="['/products']" [routerLinkActive]="['active']">
+        <li [ngClass]="isExpand ? 'm-2 p-2' : '' ">
+            <a class=" btn btn-link text-decoration-none" [routerLink]="['/products']" [routerLinkActive]="['active']">
                 <i class="me-2 fs-5 bi bi-box-seam"></i>
                 <span [ngClass]="isExpand ? '' : 'hidden'">Products</span>
             </a>
         </li>
-        <li class="m-2 p-2">
+        <li [ngClass]="isExpand ? 'm-2 p-2' : '' ">
             <a class="btn btn-link text-decoration-none" (click)="handleLogout()">
                 <i class="me-2 fs-5 bi bi-box-arrow-right"></i>
                 <span [ngClass]="isExpand ? '' : 'hidden'">Logout</span>

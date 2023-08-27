@@ -1,26 +1,50 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
-  @Input()
-  isExpand!: boolean;
-  @Output()
-  isExpandChange: EventEmitter<boolean> = new EventEmitter();
-  @Output()
-  isLoggedInChange: EventEmitter<void> = new EventEmitter();
+export class SidebarComponent implements OnInit {
+  isExpand: boolean = true;
+  isLoggedIn: Observable<boolean> = this.authService.isLoggedIn$;
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router) { }
+
+  ngOnInit(): void {
+    this.fetchUser();
+  }
+
+  fetchUser() {
+    const user = this.authService.getUserFromStorage();
+    if (user) {
+      this.authService.getUserInfo()
+        .subscribe();
+    }
+  }
 
   handleLogout() {
-    this.isLoggedInChange.emit();
+    this.authService.clearUserStorage();
+    this.router.navigate(['/login'])
   }
 
   handleExpanded() {
     this.isExpand = !this.isExpand;
-    this.isExpandChange.emit(this.isExpand)
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    let width = window.innerWidth;
+
+    if (width < 768) {
+      this.isExpand = false;
+    } else {
+      this.isExpand = true;
+    }
   }
 }

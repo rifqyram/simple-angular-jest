@@ -1,8 +1,6 @@
 <div class="app">
   <div class="d-flex vh-100 text">
-    <aside [hidden]="!isLoggedIn" [ngClass]="isExpand ? 'bg-dark expand' : 'bg-dark'">
-      <app-sidebar (isLoggedInChange)="handleLogout()" [(isExpand)]="isExpand"></app-sidebar>
-    </aside>
+    <app-sidebar class="bg-dark"></app-sidebar>
     <main class="flex-grow-1 position-relative">
       <router-outlet></router-outlet>
     </main>

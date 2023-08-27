@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { EMPTY, Observable, catchError, map, of, switchMap, tap } from 'rxjs';
-import { LoadingService } from 'src/app/shared/services/loading.service';
-import { ProductService } from '../../services/product.service';
-import CommonResponse from 'src/app/shared/models/ICommonResponse';
-import { swalSuccess } from 'src/app/utils/app-util';
+import { EMPTY, Observable, catchError, map, switchMap, tap } from 'rxjs';
+import ICommonResponse from 'src/app/shared/models/ICommonResponse';
 import { ActivatedRoute, Router } from '@angular/router';
-import handlingError from 'src/app/utils/handling-error';
-import { NewProductRequest, ProductResponse, UpdateProductRequest } from '../../models/IProductModel';
+import { NewProductRequest, UpdateProductRequest } from '../../models/IProductModel';
+import { LoadingService } from 'src/app/services/loading.service';
+import { ProductService } from 'src/app/services/product.service';
+import { UtilService } from 'src/app/services/util.service';
 
 @Component({
   selector: 'app-product-form',
@@ -23,7 +22,8 @@ export class ProductFormComponent implements OnInit {
     private readonly loadingService: LoadingService,
     private readonly productService: ProductService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly utilService: UtilService,
   ) { }
 
   ngOnInit(): void {
@@ -31,26 +31,27 @@ export class ProductFormComponent implements OnInit {
     this.fetchById();
   }
 
-  private fetchById() {
-    this.route.params.pipe(switchMap((params) => {
-      if (params && params['id']) {
-        this.loadingService.showLoading();
-        this.id = params['id'];
-        return this.productService.getById(params['id'])
-          .pipe(switchMap(res => of(res.data)));
-      }
-      return EMPTY;
-    }), catchError(handlingError)).subscribe({
-      next: (res) => {
-        this.setForm(res);
-        this.loadingService.hideLoading()
-      },
-      complete: () => this.loadingService.hideLoading()
-    });
+  fetchById() {
+    this.route.params
+      .pipe(
+        switchMap((params: any) => {
+          if (params.id) {
+            this.loadingService.showLoading();
+            this.id = params.id;
+            return this.productService.getById(params.id)
+              .pipe(catchError((err) => this.utilService.handleHttpError(err)));
+          }
+          return EMPTY;
+        })
+      )
+      .subscribe((res) => {
+        this.setForm(res.data);
+        this.loadingService.hideLoading();
+      })
   }
 
-  private setForm(res: ProductResponse) {
-    this.form.setValue({
+  setForm(res: any) {
+    this.form.patchValue({
       productId: this.id,
       name: res?.name,
       description: res?.description,
@@ -77,16 +78,15 @@ export class ProductFormComponent implements OnInit {
       return
     }
 
-
     if (!this.id) {
       const payload: NewProductRequest = this.form.value;
 
       this.productService.create(payload)
-        .pipe(catchError(handlingError))
+        .pipe(catchError((err) => this.utilService.handleHttpError(err)))
         .subscribe({
-          next: (res: CommonResponse<void>) => {
-            swalSuccess(res.message);
-            this.router.navigateByUrl('/products');
+          next: (res: ICommonResponse<void>) => {
+            this.utilService.swalSuccess(res.message);
+            this.router.navigate(['/products']).finally;
           },
           complete: () => this.loadingService.hideLoading()
         });
@@ -95,15 +95,14 @@ export class ProductFormComponent implements OnInit {
 
     const payload: UpdateProductRequest = this.form.value;
     this.productService.update(payload)
-      .pipe(catchError(handlingError))
+      .pipe(catchError(err => this.utilService.handleHttpError(err)))
       .subscribe({
-        next: (res: CommonResponse<void>) => {
-          swalSuccess(res.message);
-          this.router.navigateByUrl('/products');
+        next: (res: ICommonResponse<void>) => {
+          this.utilService.swalSuccess(res.message);
+          this.router.navigate(['/products']).finally;
         },
         complete: () => this.loadingService.hideLoading()
       });
-    return;
   }
 
 }

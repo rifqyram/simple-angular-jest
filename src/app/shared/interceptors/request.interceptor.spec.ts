@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { RequestInterceptor } from './request.interceptor';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 describe('RequestInterceptor', () => {
   let authService: any;

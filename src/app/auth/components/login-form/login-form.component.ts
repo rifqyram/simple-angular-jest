@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, catchError } from 'rxjs';
-import handlingError from 'src/app/utils/handling-error';
-import CommonResponse from 'src/app/shared/models/ICommonResponse';
+import ICommonResponse from 'src/app/shared/models/ICommonResponse';
 import { AuthResponse } from '../../models/IAuthModel';
-import { swalSuccess } from 'src/app/utils/app-util';
-import { LoadingService } from 'src/app/shared/services/loading.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { LoadingService } from 'src/app/services/loading.service';
+import { UtilService } from 'src/app/services/util.service';
 
 @Component({
   selector: 'app-login-form',
@@ -21,15 +20,19 @@ export class LoginFormComponent {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly loadingService: LoadingService
+    private readonly loadingService: LoadingService,
+    private readonly utilService: UtilService,
   ) { }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit() {
     this.buildForm();
-    const user = this.authService.getUserFromStorage();
+    this.fetchUser();
+  }
 
+  fetchUser() {
+    const user = this.authService.getUserFromStorage();
     if (user) {
-      this.router.navigateByUrl('/products')
+      this.router.navigate(['/products']).finally;
     }
   }
 
@@ -42,21 +45,21 @@ export class LoginFormComponent {
 
   submit() {
     this.loadingService.showLoading();
-    if (!this.form.valid) {
+    if (!this.form || this.form.invalid) {
       this.loadingService.hideLoading();
       return;
     }
 
     const payload = this.form.value;
     this.authService.login(payload)
-      .pipe(catchError(handlingError))
+      .pipe(catchError(err => this.utilService.handleHttpError(err)))
       .subscribe({
-        next: (res: CommonResponse<AuthResponse>) => {
+        next: (res: ICommonResponse<AuthResponse>) => {
           this.authService.storeUser(res.data);
-          swalSuccess(res.message);
-          this.router.navigateByUrl('/products');
+          this.utilService.swalSuccess(res.message);
+          this.loadingService.hideLoading()
+          this.router.navigate(['/products']).finally;
         },
-        complete: () => this.loadingService.hideLoading()
       })
   }
 

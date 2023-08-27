@@ -1,4 +1,4 @@
-export default interface CommonResponse<T> {
+export default interface ICommonResponse<T> {
     message: string;
     status: string;
     errors: any;

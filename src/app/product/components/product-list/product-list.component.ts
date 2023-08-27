@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, catchError, pipe } from 'rxjs';
-import { LoadingService } from 'src/app/shared/services/loading.service';
-import { ProductService } from '../../services/product.service';
 import { ProductResponse } from '../../models/IProductModel';
-import handlingError from 'src/app/utils/handling-error';
-import CommonResponse from 'src/app/shared/models/ICommonResponse';
-import { swalConfirm } from 'src/app/utils/app-util';
+import ICommonResponse from 'src/app/shared/models/ICommonResponse';
+import { LoadingService } from 'src/app/services/loading.service';
+import { ProductService } from 'src/app/services/product.service';
+import { UtilService } from 'src/app/services/util.service';
 
 @Component({
   selector: 'app-product-list',
@@ -18,7 +17,8 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private readonly loadingService: LoadingService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private readonly utilService: UtilService,
   ) { }
 
   ngOnInit(): void {
@@ -28,9 +28,9 @@ export class ProductListComponent implements OnInit {
   private fetchProducts() {
     this.loadingService.showLoading();
     this.productService.getAll()
-      .pipe(catchError(handlingError))
+      .pipe(catchError(err => this.utilService.handleHttpError(err)))
       .subscribe({
-        next: (res: CommonResponse<ProductResponse[]>) => {
+        next: (res: ICommonResponse<ProductResponse[]>) => {
           this.products = res.data;
         },
         complete: () => this.loadingService.hideLoading()
@@ -38,9 +38,9 @@ export class ProductListComponent implements OnInit {
   }
 
   handleDelete(id: string) {
-    swalConfirm('Are you sure want to remove this data', () => {
+    this.utilService.swalConfirm('Are you sure want to remove this data', () => {
       this.productService.deleteById(id)
-        .pipe(catchError(handlingError))
+        .pipe(catchError(err => this.utilService.handleHttpError(err)))
         .subscribe({
           next: (res) => {
             this.fetchProducts();

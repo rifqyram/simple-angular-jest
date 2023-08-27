@@ -1,10 +1,16 @@
 .container {
+    width: 320px;
+    transition: .5s ease;
 
-    h1 {
+    &.hidden {
+        width: 75px;
+    }
+
+    & h1 {
         white-space: nowrap;
 
         &.hidden {
-            display: none;
+            visibility: hidden;
         }
     }
 
@@ -36,11 +42,11 @@
         li a {
             width: 100%;
             text-align: left;
-            border-bottom: 1px solid #333;
-            cursor: pointer;
             border-radius: 0;
+            border-bottom: 1px solid #333;
             color: rgb(210, 210, 210);
             white-space: nowrap;
+            cursor: pointer;
 
             &:hover {
                 color: white;
@@ -53,7 +59,6 @@
             }
 
             span {
-
                 &.hidden {
                     visibility: hidden;
                 }
