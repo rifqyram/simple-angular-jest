@@ -32,7 +32,7 @@ export class LoginFormComponent {
   fetchUser() {
     const user = this.authService.getUserFromStorage();
     if (user) {
-      this.router.navigate(['/products']).finally;
+      this.router.navigate(['/products']);
     }
   }
 
@@ -58,7 +58,7 @@ export class LoginFormComponent {
           this.authService.storeUser(res.data);
           this.utilService.swalSuccess(res.message);
           this.loadingService.hideLoading()
-          this.router.navigate(['/products']).finally;
+          this.router.navigate(['/products']);
         },
       })
   }

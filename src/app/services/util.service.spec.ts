@@ -1,11 +1,11 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
 import { LoadingService } from './loading.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import { error } from 'console';
+import { Observable } from 'rxjs';
 
 describe('UtilService', () => {
   let service: UtilService;
@@ -44,7 +44,7 @@ describe('UtilService', () => {
 
   it('should handle 404 error with error messages', () => {
     const mockSwalError = jest.spyOn(service, 'swalError');
-    const errorResponse = new HttpErrorResponse({ status: 404, error: { error: { errors: 'Not Found' } } });
+    const errorResponse = new HttpErrorResponse({ status: 404, error: { errors: 'Not Found' } });
 
     service.handleHttpError(errorResponse);
 
@@ -53,7 +53,7 @@ describe('UtilService', () => {
 
   it('should handle 504 error with error messages', () => {
     const mockSwalError = jest.spyOn(service, 'swalError');
-    const errorResponse = new HttpErrorResponse({ status: 504, error: { error: { errors: 'Internal Server' } } });
+    const errorResponse = new HttpErrorResponse({ status: 504, error: { errors: 'Internal Server' } });
 
     service.handleHttpError(errorResponse);
 
@@ -62,7 +62,7 @@ describe('UtilService', () => {
 
   it('should handle default error with error messages', () => {
     const mockSwalError = jest.spyOn(service, 'swalError');
-    const errorResponse = new HttpErrorResponse({ status: 500, error: { error: { errors: 'Internal Server' } } });
+    const errorResponse = new HttpErrorResponse({ status: 500, error: { errors: 'Internal Server' } });
 
     service.handleHttpError(errorResponse);
 
@@ -71,9 +71,12 @@ describe('UtilService', () => {
 
   it('should handle another default error with error messages', () => {
     const mockSwalError = jest.spyOn(service, 'handleHttpError');
-    const errorResponse = new HttpErrorResponse({ status: 500, error: { error: 'Internal Server' } });
+    const errorResponse = new HttpErrorResponse({ status: 500, error: 'Internal Server' });
 
-    service.handleHttpError(errorResponse);
+    service.handleHttpError(errorResponse)
+      .subscribe({
+        error: (err) => { },
+      })
 
     expect(mockSwalError).toHaveBeenCalled();
   });

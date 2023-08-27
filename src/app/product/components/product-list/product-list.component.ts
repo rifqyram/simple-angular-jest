@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, catchError, pipe } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 import { ProductResponse } from '../../models/IProductModel';
 import ICommonResponse from 'src/app/shared/models/ICommonResponse';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -25,7 +25,7 @@ export class ProductListComponent implements OnInit {
     this.fetchProducts();
   }
 
-  private fetchProducts() {
+  fetchProducts() {
     this.loadingService.showLoading();
     this.productService.getAll()
       .pipe(catchError(err => this.utilService.handleHttpError(err)))
@@ -42,7 +42,7 @@ export class ProductListComponent implements OnInit {
       this.productService.deleteById(id)
         .pipe(catchError(err => this.utilService.handleHttpError(err)))
         .subscribe({
-          next: (res) => {
+          next: () => {
             this.fetchProducts();
           },
         })

@@ -31,7 +31,7 @@ export class RegisterFormComponent implements OnInit {
     const user = this.authService.getUserFromStorage();
 
     if (user) {
-      this.router.navigate(['/products']).finally;
+      this.router.navigate(['/products']);
     }
   }
 
@@ -56,7 +56,7 @@ export class RegisterFormComponent implements OnInit {
       .subscribe({
         next: res => {
           this.utilService.swalSuccess(res.message)
-          this.router.navigate(['/login']).finally;
+          this.router.navigate(['/login']);
         },
         complete: () => this.loadingService.hideLoading()
       });

@@ -3,8 +3,8 @@ import { ProductFormComponent } from './product/components/product-form/product-
 import { ProductListComponent } from './product/components/product-list/product-list.component';
 import { RegisterFormComponent } from './auth/components/register-form/register-form.component';
 import { LoginFormComponent } from './auth/components/login-form/login-form.component';
-import { canActivate, canActivateChild } from './shared/guard/auth.guard';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './shared/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -17,8 +17,8 @@ const routes: Routes = [
   },
   {
     path: 'products',
-    canActivate: [canActivate],
-    canActivateChild: [canActivateChild],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'add',

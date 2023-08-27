@@ -1,62 +1,54 @@
-import { inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, catchError, map, of, switchMap } from 'rxjs';
 import { AuthResponse } from 'src/app/auth/models/IAuthModel';
 import { AuthService } from 'src/app/services/auth.service';
 
 
-export const canActivate: CanActivateFn = (
-  route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard {
 
-  const authService = inject(AuthService);
-  const router = inject(Router);
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router) { }
 
-  const user: AuthResponse | null = authService.getUserFromStorage();
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-  if (user && user.token) {
-    return authService.getUserInfo().pipe(map(({ data }) => {
-      if (data) return true;
-      router.navigate(['/login']);
-      return false;
-    }),
-      catchError((err) => {
-        authService.clearUserStorage();
-        router.navigate(['/login']);
-        return of(false);
-      })
-    )
+    const user: AuthResponse | null = this.authService.getUserFromStorage();
+
+    if (user && user.token) {
+      return this.authService.getUserInfo()
+        .pipe(map(({ data }) => {
+          if (data) return true;
+          this.router.navigate(['/login']);
+          return false;
+        }));
+    }
+
+    this.router.navigate(['/login']);
+    return of(false);
   }
 
-  router.navigate(['/login']);
-  return of(false);
+  canActivateChild(
+    childRoute: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-}
+    const user: AuthResponse | null = this.authService.getUserFromStorage();
 
-export const canActivateChild: CanActivateChildFn = (
-  childRoute: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
+    if (user?.token) {
+      return this.authService.getUserInfo().pipe(map(({ data }) => {
+        if (data) return true;
+        this.router.navigate(['/login']);
+        return false;
+      }));
+    }
 
-  const authService = inject(AuthService);
-  const router = inject(Router);
-
-  const user: AuthResponse | null = authService.getUserFromStorage();
-
-  if (user && user.token) {
-    return authService.getUserInfo().pipe(map(({ data }) => {
-      if (data) return true;
-      router.navigateByUrl('/login');
-      return false;
-    }),
-      catchError((err) => {
-        authService.clearUserStorage();
-        router.navigateByUrl('/login');
-        return of(false);
-      })
-    )
+    this.router.navigate(['/login']);
+    return of(false);
   }
-
-  router.navigateByUrl('/login');
-  return of(false);
 }
 

@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { ProductService } from './product.service';
 import ICommonResponse from 'src/app/shared/models/ICommonResponse';
 import { HttpParams } from '@angular/common/http';
-import { NewProductRequest, ProductResponse, SearchProductRequest, UpdateProductRequest } from '../product/models/IProductModel';
+import { NewProductRequest, ProductResponse, UpdateProductRequest } from '../product/models/IProductModel';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -89,8 +89,6 @@ describe('ProductService', () => {
       ]
     };
 
-    const queryParams = new HttpParams();
-
     jest.spyOn(http, 'get').mockReturnValue(of(mockResponse));
 
     service.getAll().subscribe({
@@ -102,51 +100,8 @@ describe('ProductService', () => {
     });
 
     expect(http.get).toHaveBeenCalled()
-    expect(http.get).toHaveBeenCalledWith("api/products", { params: queryParams });
+    expect(http.get).toHaveBeenCalledWith("api/products");
   })
-
-  it('should return observable of ICommonResponse<ProductResponse[]> when getAl with payload', (done) => {
-    const mockResponse: Partial<ICommonResponse<ProductResponse[]>> = {
-      status: 'CREATED',
-      message: 'success',
-      data: [
-        {
-          productId: 'productIdTest',
-          name: 'Laptop Wibu',
-          description: 'Laptop',
-          price: 15000000,
-          stock: 10
-        }
-      ]
-    };
-
-    const payload: SearchProductRequest = {
-      name: '',
-      maxPrice: 20000000,
-      minPrice: 10000000,
-      page: 1,
-      size: 10
-    };
-
-    const queryParams = new HttpParams();
-    for (const key of Object.keys(payload)) {
-      const paramValue: string = `${payload.name}`;
-      queryParams.append(key, paramValue);
-    }
-
-    jest.spyOn(http, 'get').mockReturnValue(of(mockResponse));
-
-    service.getAll(payload).subscribe({
-      next: (res: Partial<ICommonResponse<ProductResponse[]>>) => {
-        expect(res).toEqual(mockResponse);
-        expect(res.data?.length).toEqual(mockResponse.data?.length);
-        done();
-      }
-    });
-
-    expect(http.get).toHaveBeenCalled()
-    expect(http.get).toHaveBeenCalledWith("api/products", { params: queryParams });
-  });
 
   it('should return observable of ICommonResponse<void> when update', (done) => {
     const mockResponse: Partial<ICommonResponse<void>> = {

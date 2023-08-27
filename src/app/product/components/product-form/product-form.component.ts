@@ -86,7 +86,7 @@ export class ProductFormComponent implements OnInit {
         .subscribe({
           next: (res: ICommonResponse<void>) => {
             this.utilService.swalSuccess(res.message);
-            this.router.navigate(['/products']).finally;
+            this.router.navigate(['/products']);
           },
           complete: () => this.loadingService.hideLoading()
         });
@@ -99,7 +99,7 @@ export class ProductFormComponent implements OnInit {
       .subscribe({
         next: (res: ICommonResponse<void>) => {
           this.utilService.swalSuccess(res.message);
-          this.router.navigate(['/products']).finally;
+          this.router.navigate(['/products']);
         },
         complete: () => this.loadingService.hideLoading()
       });

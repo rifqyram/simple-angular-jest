@@ -17,6 +17,7 @@ import { LoadingService } from './services/loading.service';
 import { ProductService } from './services/product.service';
 import { AuthService } from './services/auth.service';
 import { UtilService } from './services/util.service';
+import { AuthGuard } from './shared/guard/auth.guard';
 
 let components = [
   AppComponent,
@@ -42,6 +43,7 @@ let services = [
   ProductService,
   AuthService,
   UtilService,
+  AuthGuard,
 ]
 
 @NgModule({
